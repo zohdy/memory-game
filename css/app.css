@@ -1,0 +1,250 @@
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    font-family: 'Coda', cursive;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 500;
+}
+
+/*
+ * Styles for the deck of cards
+ */
+
+.deck {
+    max-width: 660px;
+    min-height: 680px;
+    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 3em;
+}
+
+.deck .card {
+    height: 125px;
+    width: 125px;
+    background: #2e3d49;
+    font-size: 0;
+    color: #ffffff;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+}
+
+.deck .card.open {
+    background: #02b3e4;
+    cursor: default;
+    animation-name: flipInY;;
+  	animation-duration: 1s;
+}
+
+.deck .card.show {
+    font-size: 33px;
+}
+
+.deck .card.match {
+    cursor: default;
+    background: #02ccba;
+    font-size: 33px;
+    animation-name: flash;
+    animation-duration: 1s;
+}
+
+.deck .card.no-match {
+  animation-name: wiggle;;
+  animation-duration: 1s;
+}
+
+.deck .card.disabled {
+  pointer-events: none;
+}
+
+.deck .card {
+ }
+
+/*
+ * Styles for the Score Panel
+ */
+
+.score-panel {
+    display: flex;
+    width: 660px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    text-align: left;
+    justify-content: space-around;
+    margin-bottom: 5px;
+    margin-top: 25px;
+}
+
+.score-panel .stars {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.score-panel .stars li {
+    list-style: none;
+    display: inline;
+    color: orange;
+}
+
+.score-panel .restart {
+    cursor: pointer;
+}
+
+.score-panel .restart :active {
+   transform: rotate(180deg);
+
+}
+
+#movetext, #timetext {
+  padding: 5px;
+  font-weight: bold;
+}
+
+/*
+ * Styles for the modal popup
+ */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    animation-name: animatetop;
+    animation-duration: 0.5s;
+
+}
+
+.modal-header h2 {
+  text-align: center;
+}
+
+.modal-content {
+    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+
+th {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #c0c0c0;
+
+}
+td, th {
+    padding: 10px 30px;
+
+}
+
+.time-td, .time-th {
+  border-left: 1px solid #c0c0c0;
+  border-right: 1px solid #c0c0c0;
+
+}
+
+ .rating-td li {
+   list-style: none;
+   display: inline;
+   color: orange;
+ }
+
+
+.play-again-btn {
+  display: block;
+  margin: auto;
+  padding: 20px;
+  border-width: 0;
+  outline: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+  background-color: #aa7ecd ;
+  color: #ecf0f1;
+  margin-bottom: 10px;
+}
+
+
+/***** Animations **** /
+/* All animations inspired from https://www.tutorialspoint.com */
+@keyframes animatetop {
+    from {top:-1000px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+
+@keyframes flipInY {
+   0% { transform: perspective(400px) rotateY(90deg); opacity: 0; }
+   40% { transform: perspective(400px) rotateY(-10deg); }
+   70% { transform: perspective(400px) rotateY(10deg); }
+   100% { transform: perspective(400px) rotateY(0deg); opacity: 1; }
+}
+
+@keyframes flash {
+   0%, 50%, 100% {  opacity: 1 }
+   25%, 75% {  opacity: 0; }
+}
+
+@keyframes wiggle {
+   0% { transform: skewX(9deg); }
+   10% { transform: skewX(-8deg); }
+   20% { transform: skewX(7deg); }
+   30% { transform: skewX(-6deg); }
+   40% { transform: skewX(5deg); }
+   50% { transform: skewX(-4deg); }
+   60% { transform: skewX(3deg); }
+   70% { transform: skewX(-2deg); }
+   80% { transform: skewX(1deg); }
+   90% { transform: skewX(0deg); }
+   100% { transform: skewX(0deg); }
+}
