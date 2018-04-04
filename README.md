@@ -20,6 +20,6 @@
 - When the game is finished, score stats is displayed.
 
 ## Installation
-- [Download](http://github.com) or   [Clone](http://github.com) the Repository.
+- [Download](https://github.com/zohdy/memory-game/archive/master.zip) or   [Clone](https://github.com/zohdy/memory-game.git) the Repository.
 
 - Open the  `index.html` file in your favorite browser.
