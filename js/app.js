@@ -30,7 +30,6 @@ let isTimerStarted;
 resetGame();
 
 function resetGame() {
-
    // Reset deck
    let fragment = document.createDocumentFragment();
    openCards.length = 0;
@@ -61,6 +60,7 @@ function resetGame() {
    minutesLabel.innerHTML = "00";
 
    modal.style.display = 'none';
+
  }
 
 function onCardClick() {
@@ -181,7 +181,7 @@ function showCongratulations(){
  // Helper to format the returned counter value
  // 'MM:SS' instead of 'M:S'
  function formatTime(timeValue) {
-   timeAsString = timeValue + ""; // num type to string
+   let timeAsString = timeValue + ""; // num type to string
    if (timeAsString.length < 2) {
      return "0" + timeAsString;
    } else {
