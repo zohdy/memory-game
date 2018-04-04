@@ -21,10 +21,10 @@
 - When the game is finished, score stats is displayed.
 
 ## Installation
-- [Download](https://github.com/zohdy/memory-game/archive/master.zip) or   [Clone](https://github.com/zohdy/memory-game.git) the Repository.
+- [Download](http://github.com) or   [Clone](http://github.com) the Repository.
 
 - Open the  `index.html` file in your favorite browser.
 
 ## Dependencies
-- Fonts: Coda` from Google Fonts ([Coda](https://fonts.googleapis.com/css?family=Coda)) 
-- Bootstrap v4 ([Bootstrap](https://getbootstrap.com/))
+- `Coda` font, from Google Fonts ([Coda](https://fonts.googleapis.com/css?family=Coda))
+- Bootstrap v4.6.1 ([Bootstrap](https://getbootstrap.com/))
