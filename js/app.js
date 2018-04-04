@@ -41,6 +41,7 @@ function resetGame() {
      fragment.appendChild(card);
    });
    deck.appendChild(fragment);
+   matchedCards.length = 0;
 
    // Reset moves
    numOfMoves = 0;

@@ -2,9 +2,10 @@
 
 ## Table of Contents
 
-* [Description](#description)
-* [Instructions](#instructions)
-* [Installation](#installation)
+* [Description](#Description)
+* [Instructions](#Instructions)
+* [Installation](#Installation)
+* [Dependencies](#Dependencies)
 
 ## Description
 - This game is my take on a project task from the 'Frontend Nanodegree' course by Udacity.
@@ -23,3 +24,7 @@
 - [Download](http://github.com) or   [Clone](http://github.com) the Repository.
 
 - Open the  `index.html` file in your favorite browser.
+
+## Dependencies
+- Fonts: Coda` from Google Fonts ([Coda](https://fonts.googleapis.com/css?family=Coda)) 
+- Bootstrap v4 ([Bootstrap](https://getbootstrap.com/))
