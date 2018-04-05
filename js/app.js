@@ -135,7 +135,7 @@ function increaseCounter(){
   numOfMoves++;
   counter.innerHTML = numOfMoves;
 
-  if(numOfMoves === 5 || numOfMoves === 10 || numOfMoves === 15) {
+  if(numOfMoves === 10 || numOfMoves === 15) {
     hideStar();
   }
 }
@@ -143,7 +143,7 @@ function increaseCounter(){
 function hideStar() {
   let index = numOfStars - 1;
 
-  if(stars != null && numOfStars > 0) {
+  if(stars != null && numOfStars > 1) {
       levelDownSound.play();
       stars[index].style.visibility = 'hidden';
       numOfStars--;
