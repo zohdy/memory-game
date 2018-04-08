@@ -1,17 +1,18 @@
-
 // UI
 const ui = {
-  deck : document.querySelector(".deck"),
-  stars : document.querySelectorAll(".fa-star"),
-  counter : document.querySelector("#movecounter"),
-  minutesLabel : document.querySelector("#minutes"),
-  secondsLabel : document.querySelector("#seconds"),
+  deck : document.querySelector('.deck'),
+  stars : document.querySelectorAll('.fa-star'),
+  counter : document.querySelector('#movecounter'),
+  minutesLabel : document.querySelector('#minutes'),
+  secondsLabel : document.querySelector('#seconds'),
   modal : document.querySelector('.modal'),
-  cards : document.querySelectorAll(".card")
+  cards : document.querySelectorAll('.card'),
+  playAgain : document.querySelector('.play-again-btn'),
+  resetGame : document.querySelector('.fa-repeat')
 }
 
 
-// Sound
+// Sounds
 const sounds = {
   flip : document.querySelector('#flip'),
   levelDown : document.querySelector('#level-down'),
@@ -32,13 +33,40 @@ const game = {
   isTimerStarted : false
 };
 
+
+const utils = {
+  // Helper to format the returned counter value
+  // 'MM:SS' instead of 'M:S'
+  formatTime : function(timeValue) {
+    let timeAsString = timeValue + ""; // num type to string
+    if (timeAsString.length < 2) {
+      return timeAsString.padStart(2, '0');
+    } else {
+      return timeValue;
+    }
+  },
+  // Helper method
+  // Shuffle function from http://stackoverflow.com/a/2450976
+  shuffle : function(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+      while (currentIndex !== 0) {
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+      }
+      return array;
+  }
+};
+
 resetGame();
 
 function resetGame() {
    // Reset deck
    let fragment = document.createDocumentFragment();
    game.openCards.length = 0;
-   ui.cards = shuffle(Array.from(ui.cards));
+   ui.cards = utils.shuffle(Array.from(ui.cards));
    ui.cards.forEach(function(card) {
      card.classList.remove('show', 'open', 'match');
      card.addEventListener('click', onCardClick);
@@ -66,6 +94,16 @@ function resetGame() {
 
    ui.modal.style.display = 'none';
 
+   initResetListeners();
+ }
+
+ function initResetListeners() {
+   ui.resetGame.addEventListener('click', function() {
+     resetGame();
+   })
+   ui.playAgain.addEventListener('click', function() {
+     resetGame();
+   });
  }
 
 function onCardClick() {
@@ -159,8 +197,8 @@ function startTimer() {
   game.isTimerStarted = true;
   game.intervalId = setInterval(function() {
       ++game.timeElapsed;
-      ui.secondsLabel.innerHTML = formatTime(game.timeElapsed % 60);
-      ui.minutesLabel.innerHTML = formatTime(parseInt(game.timeElapsed / 60));
+      ui.secondsLabel.innerHTML = utils.formatTime(game.timeElapsed % 60);
+      ui.minutesLabel.innerHTML = utils.formatTime(parseInt(game.timeElapsed / 60));
     }, 1000);
 }
 
@@ -181,29 +219,3 @@ function showCongratulations(){
 
   sounds.win.play();
 }
-
-
- // Helper to format the returned counter value
- // 'MM:SS' instead of 'M:S'
- function formatTime(timeValue) {
-   let timeAsString = timeValue + ""; // num type to string
-   if (timeAsString.length < 2) {
-     return "0" + timeAsString;
-   } else {
-     return timeAsString;
-   }
- }
-
- // Helper method
- // Shuffle function from http://stackoverflow.com/a/2450976
- function shuffle(array) {
-     var currentIndex = array.length, temporaryValue, randomIndex;
-     while (currentIndex !== 0) {
-         randomIndex = Math.floor(Math.random() * currentIndex);
-         currentIndex -= 1;
-         temporaryValue = array[currentIndex];
-         array[currentIndex] = array[randomIndex];
-         array[randomIndex] = temporaryValue;
-     }
-     return array;
- }
