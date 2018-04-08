@@ -1,95 +1,100 @@
 
- // DOM element references
-const deck = document.querySelector(".deck");
-const stars = document.querySelectorAll(".fa-star");
-const counter = document.querySelector("#movecounter");
-const minutesLabel = document.querySelector("#minutes");
-const secondsLabel = document.querySelector("#seconds");
-const modal = document.querySelector('.modal');
-let cards = document.querySelectorAll(".card");
+// UI
+const ui = {
+  deck : document.querySelector(".deck"),
+  stars : document.querySelectorAll(".fa-star"),
+  counter : document.querySelector("#movecounter"),
+  minutesLabel : document.querySelector("#minutes"),
+  secondsLabel : document.querySelector("#seconds"),
+  modal : document.querySelector('.modal'),
+  cards : document.querySelectorAll(".card")
+}
 
 
-// Sound FX
-const flipSound = document.querySelector('#flip');
-const levelDownSound = document.querySelector('#level-down');
-const matchSound = document.querySelector('#match');
-const noMatchSound = document.querySelector('#no-match');
-const winSound = document.querySelector('#win');
+// Sound
+const sounds = {
+  flip : document.querySelector('#flip'),
+  levelDown : document.querySelector('#level-down'),
+  match :  document.querySelector('#match'),
+  noMatch : document.querySelector('#no-match'),
+  win : document.querySelector('#win')
+};
 
 
-// Global variables
-const openCards = [];
-const matchedCards = [];
-let timeElapsed;
-let numOfMoves;
-let numOfStars = stars.length;
-let intervalId;
-let isTimerStarted;
-
+// Game state
+const game = {
+  openCards : [],
+  matchedCards : [],
+  timeElapsed : 0,
+  numOfMoves : 0,
+  numOfStars : ui.stars.length,
+  intervalId : 0,
+  isTimerStarted : false
+};
 
 resetGame();
 
 function resetGame() {
    // Reset deck
    let fragment = document.createDocumentFragment();
-   openCards.length = 0;
-   cards = shuffle(Array.from(cards));
-   cards.forEach(function(card) {
+   game.openCards.length = 0;
+   ui.cards = shuffle(Array.from(ui.cards));
+   ui.cards.forEach(function(card) {
      card.classList.remove('show', 'open', 'match');
      card.addEventListener('click', onCardClick);
      fragment.appendChild(card);
    });
-   deck.appendChild(fragment);
-   matchedCards.length = 0;
+   ui.deck.appendChild(fragment);
+   game.matchedCards.length = 0;
 
    // Reset moves
-   numOfMoves = 0;
-   counter.innerHTML = numOfMoves;
+   game.numOfMoves = 0;
+   ui.counter.innerHTML = game.numOfMoves;
 
    // Show all stars
-   numOfStars = stars.length;
-   stars.forEach(function (star) {
+   game.numOfStars = ui.stars.length;
+   ui.stars.forEach(function (star) {
      star.style.visibility = 'visible';
    });
 
    // Reset Timer
-   clearInterval(intervalId);
-   isTimerStarted = false;
-   timeElapsed = 0;
-   secondsLabel.innerHTML = "00";
-   minutesLabel.innerHTML = "00";
+   clearInterval(game.intervalId);
+   game.isTimerStarted = false;
+   game.timeElapsed = 0;
+   ui.secondsLabel.innerHTML = "00";
+   ui.minutesLabel.innerHTML = "00";
 
-   modal.style.display = 'none';
+   ui.modal.style.display = 'none';
 
  }
 
 function onCardClick() {
 
-  flipSound.play();
+  sounds.flip.play();
 
-  if(!isTimerStarted) {
+  if(!game.isTimerStarted) {
     startTimer();
   }
 
-  if(openCards.length < 2) {
-     openCards.push(this);
+  if(game.openCards.length < 2) {
+     game.openCards.push(this);
      this.classList.add('open');
      this.classList.add('show');
      this.classList.add('disabled'); // 'disabled' class disables all mouse events
    }
 
-   if(openCards.length === 2) {
-      const firstCard = openCards[0].querySelector('.fa').className;
-      const secondCard = openCards[1].querySelector('.fa').className;
+   if(game.openCards.length === 2) {
+      const firstCard = game.openCards[0].querySelector('.fa').className;
+      const secondCard = game.openCards[1].querySelector('.fa').className;
       // If their className match eg. 'fa fa-bomb'
       if(firstCard === secondCard) {
-          matchSound.play();
+          sounds.match.play();
           handleCardMatch();
-          if(matchedCards.length == cards.length) {
+          if(game.matchedCards.length == ui.cards.length) {
             showCongratulations();
           }
       } else {
-          noMatchSound.play();
+          sounds.noMatch.play();
           handleNoMatch();
           increaseCounter();
       }
@@ -97,21 +102,21 @@ function onCardClick() {
  }
 
 function handleCardMatch() {
-   openCards.forEach(function (card) {
+   game.openCards.forEach(function (card) {
      card.classList.remove("show", "open");
      card.classList.add('match');
-     matchedCards.push(card);
+     game.matchedCards.push(card);
    });
-   openCards.length = 0;
+   game.openCards.length = 0;
  }
 
 function handleNoMatch() {
     disableDeck();
-    openCards.forEach(function(card) {
+    game.openCards.forEach(function(card) {
       card.classList.add('no-match'); // 'no-match' class used purely for styling
       setTimeout(function() {
         card.classList.remove('show', 'open');
-        openCards.length = 0;
+        game.openCards.length = 0;
         enableDeck();
       }, 1500);
     });
@@ -119,43 +124,43 @@ function handleNoMatch() {
 
  // Disables events on all cards temporarily, while setTimeout() is executing
 function disableDeck(){
-  cards.forEach(function (card) {
+  ui.cards.forEach(function (card) {
     card.classList.add('disabled');
   });
 }
 
 // After setTimeout() is done deck events are re-enabled
 function enableDeck(){
-  cards.forEach(function (card) {
+  ui.cards.forEach(function (card) {
     card.classList.remove('disabled', 'no-match');
   });
 }
 
 function increaseCounter(){
-  numOfMoves++;
-  counter.innerHTML = numOfMoves;
+  game.numOfMoves++;
+  ui.counter.innerHTML = game.numOfMoves;
 
-  if(numOfMoves === 10 || numOfMoves === 15) {
+  if(game.numOfMoves === 10 || game.numOfMoves === 15) {
     hideStar();
   }
 }
 
 function hideStar() {
-  let index = numOfStars - 1;
+  let index = game.numOfStars - 1;
 
-  if(stars != null && numOfStars > 1) {
-      levelDownSound.play();
-      stars[index].style.visibility = 'hidden';
-      numOfStars--;
+  if(ui.stars != null && game.numOfStars > 1) {
+      sounds.levelDown.play();
+      ui.stars[index].style.visibility = 'hidden';
+      game.numOfStars--;
   }
 }
 
 function startTimer() {
-  isTimerStarted = true;
-  intervalId = setInterval(function() {
-      ++timeElapsed;
-      secondsLabel.innerHTML = formatTime(timeElapsed % 60);
-      minutesLabel.innerHTML = formatTime(parseInt(timeElapsed / 60));
+  game.isTimerStarted = true;
+  game.intervalId = setInterval(function() {
+      ++game.timeElapsed;
+      ui.secondsLabel.innerHTML = formatTime(game.timeElapsed % 60);
+      ui.minutesLabel.innerHTML = formatTime(parseInt(game.timeElapsed / 60));
     }, 1000);
 }
 
@@ -167,14 +172,14 @@ function showCongratulations(){
   const finalTime = minutes + ':' + seconds;
 
   // Set the current state in the modal popup
-  document.querySelector(".moves-td").innerHTML = numOfMoves;
+  document.querySelector(".moves-td").innerHTML = game.numOfMoves;
   document.querySelector(".time-td").innerHTML = finalTime;
   document.querySelector('.rating-td').innerHTML = rating;
 
   // Show the modal popup
-  modal.style.display = 'block';
+  ui.modal.style.display = 'block';
 
-  winSound.play();
+  sounds.win.play();
 }
 
 
